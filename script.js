@@ -7,12 +7,9 @@ document.querySelector('iframe').remove()
  if(location.href.toLowerCase().indexOf('rick') > -1 || location.href.toLowerCase().indexOf('astley') > -1 || location.href.toLowerCase().indexOf('roll') > -1 ){
    document.body.innerHTML = `
         <h1>NoNoNo!!!</h1>
-  <p>This page was bad and tried to rickroll you :(</p>
-    `
+  <p>This page was bad and tried to rickroll you :(</p>`
 }
-
-setInterval(() => {
-    
+setInterval(() => {   
 if(location.href === 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'){
     location.href = "about:blank"
 }
@@ -23,29 +20,3 @@ if(location.href === 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'){
         NoNoNo!!! This page was bad and tried to rickroll you :(`)
     close()
 }
-
-document.addEventListener('keydown',function(e){
-if(e.key=='P' && document.querySelector('video') && e.ctrlKey){
-     if(!document.pictureInPictureElement){
-document.querySelector('video').requestPictureInPicture()
-    }
-    else{
-        document.exitPictureInPicture();
-    }
-  }
-  
-    else if(e.key=='F' && e.ctrlKey){
-        if(!document.fullscreenElement){
-         if(document.querySelector('video')){
-document.querySelector('video').requestFullscreen();
-        }
-         else if(document.querySelector('iframe')){ document.querySelector('iframe').requestFullscreen();
-        }
-         else if(document.querySelector('canvas')){ document.querySelector('canvas').requestFullscreen();
-        }
-    }
-      else{
-          document.exitFullscreen();
-      }
-    }
-    })
