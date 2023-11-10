@@ -19,9 +19,14 @@ if(isAYouTubeWatchPage){
   if(document.querySelector('video')){
     document.querySelector('video').pause()
     clearInterval(int)
-    setTimeout(() => document.querySelector('video').play(), 100);
+    let int1 = setInterval(() => {
+    if(document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string') && document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string').textContent){
+        document.querySelector('video').play()
+        clearInterval(int1)
+    }
+    },100)
   }
- },500)
+ },100)
 }
 
 if(document.querySelector('iframe')){
@@ -46,7 +51,6 @@ if(isAYouTubePage &&
 (location.href.match(susCheck) || 
 (document.querySelector('#title > h1 > yt-formatted-string') ? document.querySelector("#title > h1 > yt-formatted-string").textContent.match(susCheck) : null) ||
 (document.querySelector("#overlay > ytd-reel-player-header-renderer > h2 > yt-formatted-string") ? document.querySelector("#overlay > ytd-reel-player-header-renderer > h2 > yt-formatted-string").textContent.match(susCheck) : null) ||
-(document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string') ? document.querySelector("#text > a.yt-simple-endpoint.style-scope.yt-formatted-string").textContent.match(susCheck) : null) ||
 (document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string') ? document.querySelector("#text > a.yt-simple-endpoint.style-scope.yt-formatted-string").textContent.match(susCheck) : null))){
     location.href = "about:blank"
 }
