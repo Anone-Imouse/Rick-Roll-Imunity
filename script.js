@@ -1,6 +1,27 @@
+if(!(location.href.includes("https://github.com/Anone-Imouse/Rick-Roll-Imunity/"))){
 const isAYouTubePage = location.href.includes("https://www.youtube.com/")
 const isAYouTubeWatchPage = location.href.includes("https://www.youtube.com/watch") || location.href.includes("https://www.youtube.com/shorts")
 const susCheck = /r(i|1)ckr(o|0)ll|r(i|1)ck( )?(a|4)(s|5)tl(e|3)y|n(e|3)v(e|3)r g(o|0)nn(4|a) g(i|1)v(e|3) y(o|0)u up|nggyu|(a|4)(s|5)tl(e|3)y|r(1|i)ck( )+r(o|0)(l|7)(l|7)|r(1|i)ck(4|a)(s|5)tl(e|3)y/gim
+const {log} = console;
+
+    chrome.runtime.sendMessage({ type: 'request' }, response => {
+        let start = Date.now();
+        const blockList = response
+        
+        let int = setInterval(() =>{
+            if(isAYouTubeWatchPage){
+                let videoID = location.search.replace(/&(.)+/g,'').replace(/\?v=/g,'')
+                blockList.forEach(blockedLink => {
+                    if(blockedLink.includes(videoID)){
+                        clearInterval(int)
+                        let timeTaken = (Date.now() - start) / 1000;
+                        log(`It took ${Math.round((timeTaken+Number.EPSILON) * 100) / 100} seconds to successfully redirect you from this rickroll.`)
+                        location.href = "about:blank";
+                    }
+                })
+            }
+        },500)
+    })
 
 if(document.querySelector('video')){
     if(document.querySelector('video').autoplay){
@@ -13,6 +34,25 @@ document.querySelector('video').play()
   }
  }
 }
+
+/*if(location.href.includes('https://www.youtube.com/playlist')){
+    let int = setInterval(() => {
+        if(document.querySelector("#page-manager > ytd-browse > ytd-playlist-header-renderer > div > div.immersive-header-background-wrapper.style-scope.ytd-playlist-header-renderer > div")){
+            clearInterval(int)
+            let list = []
+            document.querySelectorAll('a').forEach(basicLink => {
+                let link = basicLink.href
+                if(link.includes('/shorts') || link.includes('/watch')){
+                    list.push(link)
+                }
+            })
+            let currentList = JSON.parse(localStorage.getItem('links'))
+            currentList = new Set(currentList.concat(list))
+            console.log(currentList)
+            localStorage.setItem('links',JSON.stringify(Array.from(currentList)))
+        }
+    },300)
+}*/
 
 if(isAYouTubeWatchPage){
  let int = setInterval(() => {
@@ -59,4 +99,5 @@ if(isAYouTubePage &&
  if(location.href.toLowerCase().includes('noordstar')){
     alert(`NoNoNo!!! This page was bad and tried to rickroll you :(`)
      location.href = "about:blank"
+}
 }
