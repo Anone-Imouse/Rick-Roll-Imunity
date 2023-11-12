@@ -7,7 +7,24 @@ var blockList;
 
     chrome.runtime.sendMessage({ type: 'request' }, response => {
         let start = Date.now();
-        blockList = response
+        blockList = response;
+        
+        setInterval(() => {
+        if(isAYouTubeWatchPage()){
+            let int = setInterval(() => {
+                if(blockList.join(' ').includes(location.href.replace(/&(.)+/g,''))){
+                    document.querySelector('video').pause()
+                    clearInterval(int)
+                    let int1 = setInterval(() => {
+                    if(document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string') && document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string').textContent){
+                        document.querySelector('video').play()
+                        clearInterval(int1)
+                    }
+                    },100)
+                }
+            },100)
+            }
+        },100)
         
         let int = setInterval(() =>{
             if(isAYouTubeWatchPage()){
@@ -55,23 +72,6 @@ document.querySelector('video').play()
         }
     },300)
 }*/
-
-setInterval(() => {
-if(isAYouTubeWatchPage()){
- let int = setInterval(() => {
-  if(blockList.join(' ').includes(location.href.replace(/&(.)+/g,''))){
-    document.querySelector('video').pause()
-    clearInterval(int)
-    let int1 = setInterval(() => {
-    if(document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string') && document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string').textContent){
-        document.querySelector('video').play()
-        clearInterval(int1)
-    }
-    },100)
-  }
- },100)
-}
-},10)
 
 if(document.querySelector('iframe')){
     if(document.querySelector('iframe').src == "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?&enablejsapi=1&autoplay=1&mute=1"){
