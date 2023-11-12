@@ -11,7 +11,7 @@ var blockList;
         
         let int = setInterval(() =>{
             if(isAYouTubeWatchPage()){
-                let videoID = location.search.replace(/&(.)+/g,'').replace(/\?v=/g,'')
+                let videoID = location.href.replace(/&(.)+/g,'').replace(/\?v=/g,'').replace("https://www.youtube.com")
                 blockList.forEach(blockedLink => {
                     if(blockedLink.includes(videoID)){
                         document.querySelector('video').pause()
