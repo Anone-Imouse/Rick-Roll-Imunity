@@ -1,45 +1,35 @@
 if(!(location.href.includes("https://github.com/Anone-Imouse/Rick-Roll-Imunity/"))){
 const isAYouTubePage = () => location.href.includes("https://www.youtube.com/");
 const isAYouTubeWatchPage = () => location.href.includes("https://www.youtube.com/watch") || location.href.includes("https://www.youtube.com/shorts");
-const susCheck = /r(i|1)ckr(o|0)(l|7)(l|7)|r(i|1)ck( )?(a|4)(s|5)tl(e|3)y|n(e|3)v(e|3)r g(o|0)nn(4|a) g(i|1)v(e|3) y(o|0)u up|nggyu|(a|4)(s|5)tl(e|3)y|r(1|i)ck( )+r(o|0)(l|7)(l|7)|r(1|i)ck(4|a)(s|5)tl(e|3)y/gim;
+const susCheck = /(r(i|1)ckr(o|0)(l|7)(l|7))|(r(i|1)ck( |\+|&|=)?(a|4)(s|5)t(l|7)(e|3)y)|(n(e|3)v(e|3)r( |\+|&|=)?g(o|0)nn(4|a)( |\+|&|=)?g(i|1)v(e|3)( |\+|&|=)?y(o|0)u( |\+|&|=)?up)|(nggyu)|((a|4)(s|5)t(l|7)(e|3)y)|(r(1|i)ck( |\+|&|=)?r(o|0)(l|7)(l|7))|(r(1|i)ck(4|a)(s|5)t(l|7)(e|3)y)|(y(0|o)ur( |\+|&|=)?h(3|e)(a|4)rt(')?(s|5)( |\+|&|=)?b(e|3)(3|e)n( |\+|&|=)?(a|4)ch(i|1)n(g)?( |\+|&|=)?(but( |\+|&|=)?y(o|0)u(')?r(e|3)( |\+|&|=)?t(o|0)(o|0)( |\+|&|=)?(s|5)hy( |\+|&|=)?t(o|0)( |\+|&|=)?(s|5)(a|4)y( |\+|&|=)?(i|1)t)?)/gim;
 const {log} = console;
 var blockList;
-
+    let start = Date.now()
     chrome.runtime.sendMessage({ type: 'request' }, response => {
-        let start = Date.now();
         blockList = response;
-        
+        if(blockList.includes(location.href.replace(/&(.)+/g,''))){
+            location.href = "about:blank"
+        }
+        if(document.title.match(susCheck)){
+            location.href = "about:blank"
+        }
         setInterval(() => {
-        if(isAYouTubeWatchPage()){
-            let int = setInterval(() => {
-                if(blockList.join(' ').includes(location.href.replace(/&(.)+/g,''))){
-                    document.querySelector('video').pause()
-                    clearInterval(int)
-                    let int1 = setInterval(() => {
-                    if(document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string') && document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string').textContent){
-                        document.querySelector('video').play()
-                        clearInterval(int1)
-                    }
-                    },100)
-                }
-            },100)
+            if(blockList.includes(location.href.replace(/&(.)+/g,''))){
+                location.href = "about:blank"
             }
         },100)
-        
-        let int = setInterval(() =>{
-            if(isAYouTubeWatchPage()){
-                let videoID = location.href.replace(/&(.)+/g,'').replace(/\?v=/g,'').replace("https://www.youtube.com")
-                blockList.forEach(blockedLink => {
-                    if(blockedLink.includes(videoID)){
-                        document.querySelector('video').pause()
-                        clearInterval(int)
-                        let timeTaken = (Date.now() - start) / 1000;
-                        log(`It took ${Math.round((timeTaken+Number.EPSILON) * 100) / 100} seconds to successfully redirect you from this rickroll.`)
-                        location.href = "about:blank";
-                    }
-                })
+        setInterval(() => {
+            if(document.title.match(susCheck)){
+                location.href = "about:blank"
             }
         },100)
+        document.addEventListener('click', function(e){
+            let targ = e.target
+            log(targ)
+            if(((targ.parent && tar.parent instanceof HTMLAnchorElement) || targ instanceof HTMLAnchorElement) && targ.href && blockList.includes(targ.href) && !(confirm('Warning: This link might lead to a rickroll! Click OK to continue anyway.'))){
+                e.preventDefault()
+            }
+        })
     })
 
 if(document.querySelector('video')){
@@ -79,7 +69,7 @@ document.querySelector('iframe').remove()
 }
 }
 
-if(location.href.match(susCheck)){
+if(decodeURI(location.href).match(susCheck) || document.title.match(susCheck)){
    document.body.innerHTML = `
         <h1>NoNoNo!!!</h1>
   <p>This page was bad and tried to rickroll you :(</p>
@@ -88,7 +78,7 @@ if(location.href.match(susCheck)){
 
 setInterval(() => {
 if(isAYouTubePage() && 
-(location.href.match(susCheck) || 
+(decodeURI(location.href).match(susCheck) || 
 (document.querySelector('#title > h1 > yt-formatted-string') ? document.querySelector("#title > h1 > yt-formatted-string").textContent.match(susCheck) : null) ||
 (document.querySelector("#overlay > ytd-reel-player-header-renderer > h2 > yt-formatted-string") ? document.querySelector("#overlay > ytd-reel-player-header-renderer > h2 > yt-formatted-string").textContent.match(susCheck) : null) ||
 (document.querySelector('#text > a.yt-simple-endpoint.style-scope.yt-formatted-string') ? document.querySelector("#text > a.yt-simple-endpoint.style-scope.yt-formatted-string").textContent.match(susCheck) : null))){
